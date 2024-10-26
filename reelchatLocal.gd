@@ -6,7 +6,7 @@ const MUTE_SOUND = preload("res://mods/BlueberryWolfi.ReelChat/Assets/mic_mute.o
 const UNMUTE_SOUND = preload("res://mods/BlueberryWolfi.ReelChat/Assets/mic_unmute.ogg")
 
 var steam_id = Network.STEAM_ID
-var current_sample_rate: int = 48000
+var current_sample_rate: int = 16000
 var has_loopback: bool = false
 var is_voice_toggled: bool = false
 var packet_read_limit: int = 5
@@ -141,7 +141,7 @@ func get_sample_rate()->void :
 	if use_optimal_sample_rate:
 		current_sample_rate = optimal_sample_rate
 	else :
-		current_sample_rate = 48000
+		current_sample_rate = 16000
 	print("Current sample rate: %s" % current_sample_rate)
 
 

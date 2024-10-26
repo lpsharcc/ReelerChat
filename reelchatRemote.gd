@@ -1,7 +1,7 @@
 extends Node
 
 
-var current_sample_rate: int = 48000
+var current_sample_rate: int = 16000
 var has_loopback: bool = true
 var is_voice_toggled: bool = false
 var packet_read_limit: int = 5
@@ -31,7 +31,7 @@ func get_sample_rate()->void :
 	if use_optimal_sample_rate:
 		current_sample_rate = optimal_sample_rate
 	else :
-		current_sample_rate = 48000
+		current_sample_rate = 16000
 
 
 func process_voice_data(voice_data: Dictionary)->void :
