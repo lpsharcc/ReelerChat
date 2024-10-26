@@ -1,4 +1,4 @@
-# BlueberryWolfi.ReelChat
+# ReelChat
 ##  Proximity Voice Chat Mod for WEBFISHING using GDWeave
 
 ### I am too exhausted to make a proper usage docs but
