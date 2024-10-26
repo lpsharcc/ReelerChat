@@ -9,4 +9,5 @@ T: push to talk
 You can change keybinds in the mod settings
 
 Requires:
+https://github.com/NotNite/GDWeave
 https://github.com/BlueberryWolf/BlueberryWolfi.APIs/releases/latest
