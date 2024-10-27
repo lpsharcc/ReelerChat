@@ -1,5 +1,5 @@
-# FlyFishing
-A Flying Mod for for WEBFISHING using GDWeave
+# ReelChat
+It's reel! A proximity voice chat mod for WEBFISHING using GDWeave
 
 ## Installation (for the peeps)
 **Ensure to not accidentally download the zip from `Code`**
@@ -18,5 +18,5 @@ The default keybinds are:
 * T: Push to Talk
 
 ## Requirements
-* Ensure [GDWeave](https://github.com/NotNite/GDWeave) is installed to use thesemods.
-* Ensure [My APIs](https://github.com/BlueberryWolf/APIs/releases/latest/download/BlueberryWolfi.APIs.zip) are properly installed to use FlyFishing
+* Ensure [GDWeave](https://github.com/NotNite/GDWeave) is installed to use these mods.
+* Ensure [My APIs](https://github.com/BlueberryWolf/APIs/releases/latest/download/BlueberryWolfi.APIs.zip) are properly installed to use ReelChat
