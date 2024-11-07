@@ -10,17 +10,17 @@ var PlayerAPI
 
 func readPackets():
 	if Network.PLAYING_OFFLINE: return 
-	
 	var PACKET_SIZE = Steam.getAvailableP2PPacketSize(5)
 	if PACKET_SIZE > 0:
 		var PACKET = Steam.readP2PPacket(PACKET_SIZE, 5)
 		
 		if PACKET.empty():
 			print("Error! Empty Packet!")
+		if not PACKET.has("steam_id_remote"):
+			return
 		
 		var data = bytes2var(PACKET.data.decompress_dynamic( - 1, File.COMPRESSION_GZIP))
-
-		emit_signal("reelchat_voice", int(data.steamid), data)
+		emit_signal("reelchat_voice", int(PACKET.steam_id_remote), data)
 
 func _ready():
 	PlayerAPI = get_tree().root.get_node("BlueberryWolfiAPIs/PlayerAPI")
