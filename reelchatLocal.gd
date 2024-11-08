@@ -74,9 +74,9 @@ func _process(_delta: float)->void :
 	check_for_voice()
 
 func _send_net(type: String, data: Dictionary = {}, target: String = "all"):
-	var complete_data: Dictionary = { "type": ("reelchat_%s" % type), "voice_data": data}
+	var complete_data: Dictionary = { "steamid": Network.STEAM_ID, "type": ("reelchat_%s" % type), "voice_data": data}
 	
-	Network._send_P2P_Packet(complete_data, target, 2, 5)
+	Network._send_P2P_Packet(complete_data, target, 2, 22)
 
 func _on_loopback_pressed()->void :
 	has_loopback = not has_loopback
