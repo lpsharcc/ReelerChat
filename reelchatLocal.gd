@@ -86,20 +86,28 @@ func _on_loopback_pressed()->void :
 func _on_optimal_pressed()->void :
 	use_optimal_sample_rate = not use_optimal_sample_rate
 
+func is_busy():
+	if not PlayerAPI: return true
+	if not is_instance_valid(PlayerAPI.local_player): return true
+	if PlayerAPI.local_player.busy: return true
+	return false
 
 func _on_toggle_voice_pressed()->void :
+	if is_busy(): return
 	is_voice_toggled = not is_voice_toggled
 	print("Toggling voice chat: %s" % is_voice_toggled)
 	change_voice_status()
 
 
 func _on_to_talk_button_down()->void :
+	if is_busy(): return
 	print("Starting voice chat")
 	is_voice_toggled = true
 	change_voice_status()
 
 
 func _on_to_talk_button_up()->void :
+	if is_busy(): return
 	print("Stopping voice chat")
 	is_voice_toggled = false
 	change_voice_status()
