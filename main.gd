@@ -7,28 +7,37 @@ var prefabType = LOCALAUDIO_PREFAB
 signal reelchat_voice(steamid, data)
 
 var PlayerAPI
+var CHANNEL = 36
 
-func readPackets():
-	if Network.PLAYING_OFFLINE: return 
-	
-	var PACKET_SIZE = Steam.getAvailableP2PPacketSize(22)
-	if PACKET_SIZE > 0:
-		var PACKET = Steam.readP2PPacket(PACKET_SIZE, 22)
-		
-		if PACKET.empty():
-			print("Error! Empty Packet!")
-		
-		var data = bytes2var(PACKET.data.decompress_dynamic( - 1, File.COMPRESSION_GZIP))
+func read_packets():
+	if Network.PLAYING_OFFLINE:
+		return
 
-		emit_signal("reelchat_voice", int(data.steamid), data)
+	for i in 32:
+		var packets = Steam.receiveMessagesOnChannel(CHANNEL, 8)
+		if packets.size() == 0:
+			break
+
+		for packet in packets:
+			var PACKET_SIZE: int = packet["payload"].size()
+			if PACKET_SIZE > 0:
+				var sender = packet["identity"]
+				var data = bytes2var(packet.payload.decompress_dynamic(-1, Network.COMPRESSION_TYPE))
+
+				if not data.has("type"):
+					continue
+
+				var type = data["type"]
+				emit_signal("reelchat_voice", sender, data)
 
 func _ready():
 	PlayerAPI = get_tree().root.get_node("BlueberryWolfiAPIs/PlayerAPI")
 	PlayerAPI.connect("_player_added", self, "init_playeraudio")
+	set_process(true)
 
 func _process(delta):
 	if Network.STEAM_LOBBY_ID > 0:
-		readPackets()
+		read_packets()
 
 func init_playeraudio(player):
 	print("reelchat player added")
