@@ -1,6 +1,5 @@
 extends Node
 
-
 var current_sample_rate: int = 16000
 var has_loopback: bool = true
 var is_voice_toggled: bool = false
