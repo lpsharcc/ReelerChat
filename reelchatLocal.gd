@@ -4,6 +4,7 @@ const MUTE_ICON = preload("res://mods/BlueberryWolfi.ReelChat/Assets/mic_mute.pn
 const UNMUTE_ICON = preload("res://mods/BlueberryWolfi.ReelChat/Assets/mic_unmute.png")
 const MUTE_SOUND = preload("res://mods/BlueberryWolfi.ReelChat/Assets/mic_mute.ogg")
 const UNMUTE_SOUND = preload("res://mods/BlueberryWolfi.ReelChat/Assets/mic_unmute.ogg")
+const CHANNEL = 36
 
 var steam_id = Network.STEAM_ID
 var current_sample_rate: int = 16000
@@ -73,10 +74,17 @@ func _ui_tween_size(ui, factor):
 func _process(_delta: float)->void :
 	check_for_voice()
 
-func _send_net(type: String, data: Dictionary = {}, target: String = "all"):
+func _send_net(type: String, data: Dictionary = {}, target = "all"):
 	var complete_data: Dictionary = { "steamid": Network.STEAM_ID, "type": ("reelchat_%s" % type), "voice_data": data}
-	
-	Network._send_P2P_Packet(complete_data, target, 2, 22)
+
+	if target in ["all", "steamlobby"]:
+		emit_signal("reelchat_voice", Network.STEAM_ID, complete_data)
+		
+		Network._send_P2P_Packet(complete_data, target, 2, CHANNEL)
+	elif int(target) == Network.STEAM_ID:
+		emit_signal("reelchat_voice", target, complete_data)
+	else:
+		Network._send_P2P_Packet(complete_data, int(target), 2, CHANNEL)
 
 func _on_loopback_pressed()->void :
 	has_loopback = not has_loopback
