@@ -8,6 +8,11 @@ onready var PlayerAPI = get_tree().root.get_node("BlueberryWolfiAPIs/PlayerAPI")
 onready var slider_container = $ScrollContainer/VBoxContainer
 
 func add_slider_with_name(id: int, name: String)->void:
+	var player: Node = PlayerAPI.get_player_from_steamid(str(id))
+	# this cuz dedi servers
+	if !player:
+		return
+	
 	var instance = SLIDER_PREFAB.instance()
 	var name_label: RichTextLabel = instance.get_node("NameLabel")
 	
@@ -15,7 +20,6 @@ func add_slider_with_name(id: int, name: String)->void:
 	
 	name_label.text = name
 	instance.steam_id = id
-	var player: Node = PlayerAPI.get_player_from_steamid(str(id))
 	
 	# if this fails, theres something very very wrong 
 	# so we dont care either way :)
