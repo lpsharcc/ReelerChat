@@ -1,5 +1,6 @@
 # ReelerChat
 It doesnt get more reel than this! A fork of the proximity voice chat mod for WEBFISHING using GDWeave
+Now features volume sliders!
 
 ## Installation (for the peeps)
 **Ensure to not accidentally download the zip from `Code`**
