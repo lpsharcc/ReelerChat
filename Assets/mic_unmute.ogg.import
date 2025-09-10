@@ -2,12 +2,12 @@
 
 importer="ogg_vorbis"
 type="AudioStreamOGGVorbis"
-path="res://.import/mic_unmute.ogg-d0615f78318d206eac8561da377b64ef.oggstr"
+path="res://.import/mic_unmute.ogg-14b5dbee180ac3453ccd3c47be48ecc4.oggstr"
 
 [deps]
 
-source_file="res://mods/BlueberryWolfi.ReelChat/Assets/mic_unmute.ogg"
-dest_files=[ "res://.import/mic_unmute.ogg-d0615f78318d206eac8561da377b64ef.oggstr" ]
+source_file="res://mods/LPSharcc.ReelerChat/Assets/mic_unmute.ogg"
+dest_files=[ "res://.import/mic_unmute.ogg-14b5dbee180ac3453ccd3c47be48ecc4.oggstr" ]
 
 [params]
 

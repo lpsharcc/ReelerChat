@@ -1,11 +1,13 @@
 extends Node
 
-const LOCALAUDIO_PREFAB = preload("res://mods/BlueberryWolfi.ReelChat/Scenes/localAudio.tscn")
-const REMOTE_AUDIO_PREFAB = preload("res://mods/BlueberryWolfi.ReelChat/Scenes/remoteAudio.tscn")
+const LOCALAUDIO_PREFAB = preload("res://mods/LPSharcc.ReelerChat/Scenes/localAudio.tscn")
+const REMOTE_AUDIO_PREFAB = preload("res://mods/LPSharcc.ReelerChat/Scenes/remoteAudio.tscn")
+const SAVE_FILENAME = "user://webfishing_reelchat_volumes.save"
 
 var prefabType = LOCALAUDIO_PREFAB
 signal reelchat_voice(steamid, data)
 
+var volumes
 var PlayerAPI
 var CHANNEL = 36
 
@@ -33,6 +35,16 @@ func read_packets():
 func _ready():
 	PlayerAPI = get_tree().root.get_node("BlueberryWolfiAPIs/PlayerAPI")
 	PlayerAPI.connect("_player_added", self, "init_playeraudio")
+	var save = File.new()
+	volumes = {}
+	if save.file_exists(SAVE_FILENAME):
+		save.open(SAVE_FILENAME, File.READ)
+		volumes = save.get_var()
+		save.close()
+	else: 
+		save.open(SAVE_FILENAME, File.WRITE)
+		save.store_var(volumes)
+		save.close()
 	set_process(true)
 
 func _process(delta):
@@ -47,4 +59,11 @@ func init_playeraudio(player):
 		prefabType = REMOTE_AUDIO_PREFAB
 		
 	var playeraudioInstance = prefabType.instance()
+	
+	if !volumes.has(player):
+		volumes[player] = 1.0
+	var voice: AudioStreamPlayer3D = playeraudioInstance.get_node("Voice")
+	var volume_value = volumes[player] - 1.0
+	voice.unit_db = 36.0 * volume_value if volume_value > 0 else volume_value * 80.0
+	
 	player.add_child(playeraudioInstance)

@@ -1,10 +1,11 @@
 extends Node
 
-const MUTE_ICON = preload("res://mods/BlueberryWolfi.ReelChat/Assets/mic_mute.png")
-const UNMUTE_ICON = preload("res://mods/BlueberryWolfi.ReelChat/Assets/mic_unmute.png")
-const MUTE_SOUND = preload("res://mods/BlueberryWolfi.ReelChat/Assets/mic_mute.ogg")
-const UNMUTE_SOUND = preload("res://mods/BlueberryWolfi.ReelChat/Assets/mic_unmute.ogg")
+const MUTE_ICON = preload("res://mods/LPSharcc.ReelerChat/Assets/mic_mute.png")
+const UNMUTE_ICON = preload("res://mods/LPSharcc.ReelerChat/Assets/mic_unmute.png")
+const MUTE_SOUND = preload("res://mods/LPSharcc.ReelerChat/Assets/mic_mute.ogg")
+const UNMUTE_SOUND = preload("res://mods/LPSharcc.ReelerChat/Assets/mic_unmute.ogg")
 const CHANNEL = 36
+const SAVE_FILENAME = "user://webfishing_reelchat_volumes.save"
 
 var steam_id = Network.STEAM_ID
 var current_sample_rate: int = 16000
@@ -15,6 +16,9 @@ var use_optimal_sample_rate: bool = false
 var local_voice_generator: AudioStreamGenerator = null
 var local_playback: AudioStreamPlayer = null
 var local_voice_buffer: PoolByteArray = PoolByteArray()
+var slider_window_opened: bool = false
+var slider_window_scene = preload("res://mods/LPSharcc.ReelerChat/Scenes/volumeSliderWindow.tscn")
+var slider_window_instance: Node = null
 var current_ui
 var mic_icon
 var mic_sound
@@ -22,11 +26,12 @@ var tween
 
 onready var PlayerAPI = get_tree().root.get_node("BlueberryWolfiAPIs/PlayerAPI")
 onready var KeybindAPI = get_tree().root.get_node("BlueberryWolfiAPIs/KeybindsAPI")
+onready var Reelchat = get_tree().root.get_node("LPSharccReelerChat")
 
 onready var entities = get_tree().current_scene.get_node("Viewport/main/entities")
 
 func _ready():
-	print("reelchat init")
+	print("reelerchat init")
 	local_voice_generator = AudioStreamGenerator.new()
 	local_voice_generator.mix_rate = current_sample_rate
 	$Voice.stream = local_voice_generator
@@ -45,15 +50,22 @@ func _ready():
 		"key": KEY_T,
 	})
 	
+	var open_slider_window_signal = KeybindAPI.register_keybind({
+		"action_name": "open_slider_window",
+		"title": "Open Reelchat Volume Control Window",
+		"key": KEY_L,
+	})
+	
 	print(toggle_mic_signal)
 	KeybindAPI.connect(toggle_mic_signal, self, "_on_toggle_voice_pressed")
 	KeybindAPI.connect(pushtalk_mic_signal, self, "_on_to_talk_button_down")
 	KeybindAPI.connect(pushtalk_mic_signal + "_up", self, "_on_to_talk_button_up")
+	KeybindAPI.connect(open_slider_window_signal, self, "_on_open_slider_window_pressed")
 	
 	_init_ui()
 	
 func _init_ui():
-	current_ui = preload("res://mods/BlueberryWolfi.ReelChat/Scenes/reelchatUI.tscn").instance()
+	current_ui = preload("res://mods/LPSharcc.ReelerChat/Scenes/reelchatUI.tscn").instance()
 	get_tree().root.get_node("playerhud/main/in_game").add_child(current_ui)
 	mic_icon = current_ui.get_node("mic_icon")
 	mic_sound = current_ui.get_node("mic_sound")
@@ -191,3 +203,30 @@ func process_voice_data(voice_data: Dictionary)->void :
 		var playback = $Voice.get_stream_playback() as AudioStreamGeneratorPlayback
 		if playback.can_push_buffer(buffer.size()):
 			playback.push_buffer(buffer)
+
+func _on_open_slider_window_pressed()->void:
+	
+	if slider_window_opened:
+		# save the volumes and close the window
+		# TODO make it async so we dont have to wait for the save to be put on disk
+		
+		var save = File.new()
+		save.open(SAVE_FILENAME, File.WRITE)
+		save.store_var(Reelchat.volumes)
+		save.close()
+		
+		slider_window_instance.queue_free()
+		slider_window_instance = null
+	else:
+		# open the window
+		var player_hud = get_node_or_null("/root/playerhud")
+		var meow: Control = \
+			player_hud.get_node_or_null("main")
+		
+		if meow and meow.get_focus_owner():
+			return
+		
+		slider_window_instance = slider_window_scene.instance()
+		player_hud.add_child(slider_window_instance)
+	
+	slider_window_opened = !slider_window_opened

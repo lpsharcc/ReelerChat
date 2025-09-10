@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/mic_mute.png-c1d9d309c0e9e17aae448a01e713e11d.stex"
+path="res://.import/mic_mute.png-3176f073effaf6c9f03576d88734f775.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://mods/BlueberryWolfi.ReelChat/Assets/mic_mute.png"
-dest_files=[ "res://.import/mic_mute.png-c1d9d309c0e9e17aae448a01e713e11d.stex" ]
+source_file="res://mods/LPSharcc.ReelerChat/Assets/mic_mute.png"
+dest_files=[ "res://.import/mic_mute.png-3176f073effaf6c9f03576d88734f775.stex" ]
 
 [params]
 
