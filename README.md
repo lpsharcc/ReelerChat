@@ -4,7 +4,7 @@ It doesnt get more reel than this! A fork of the proximity voice chat mod for WE
 Now features volume sliders!
 
 ## Installation with a Mod Manager (such as r2modman)
-1. [Download ReelerChat](https://github.com/lpsharcc/ReelerChat/releases/download/v1.1.2/ReelerChatManualInstall.zip)
+1. [Download ReelerChat](https://github.com/lpsharcc/ReelerChat/releases/download/v1.1.2/ReelerChat.zip)
 2. Open the zip with your mod manager (in r2modman click on the profile in the bottom left -> "Install local mod" and choose the zip)
 
 ## Manual Installation
